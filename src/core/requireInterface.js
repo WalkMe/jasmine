@@ -1,4 +1,6 @@
-getJasmineRequireObj().interface = function(jasmine, env) {
+getJasmineRequireObj().interface = function(jasmine, env, scopeTester) {
+  scopeTester = scopeTester || function (func){return func;};
+
   var jasmineInterface = {
     describe: function(description, specDefinitions) {
       return env.describe(description, specDefinitions);
@@ -12,16 +14,18 @@ getJasmineRequireObj().interface = function(jasmine, env) {
       return env.fdescribe(description, specDefinitions);
     },
 
-    it: function() {
-      return env.it.apply(env, arguments);
+    it: function(description, fn, timeout, properties) {
+      fn = scopeTester(fn, properties);
+      return env.it(description, fn, timeout);
     },
 
     xit: function() {
       return env.xit.apply(env, arguments);
     },
 
-    fit: function() {
-      return env.fit.apply(env, arguments);
+    fit: function(description, fn, timeout, properties) {
+      fn = scopeTester(fn, properties);
+      return env.fit(description, fn, timeout);
     },
 
     beforeEach: function() {
