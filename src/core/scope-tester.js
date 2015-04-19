@@ -1,4 +1,5 @@
 getJasmineRequireObj().scopeTester = function() {
+	testScopeContamination.ScopeMonitor = ScopeMonitor;
 	return testScopeContamination;
 
 	function testScopeContamination(itFunc, options){
