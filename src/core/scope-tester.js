@@ -1,4 +1,4 @@
-getJasmineRequireObj().scopeTester = function() {
+getJasmineRequireObj().scopeTester = (function() {
 	testScopeContamination.ScopeMonitor = ScopeMonitor;
 	return testScopeContamination;
 
@@ -24,14 +24,14 @@ getJasmineRequireObj().scopeTester = function() {
 		function innerIsScopeContaminated() {
 			var monitor = takeWindowSnapshot();
 			itFunc.apply(this,arguments);
-			checkWindowDifference(monitor);
+			monitor.checkWindowDifference();
 		}
 
 		function innerIsScopeContaminatedAsync(doneCallback) {
 			var monitor = takeWindowSnapshot();
 			var callback = doneCallback;
 			arguments[0] = function done() {
-				checkWindowDifference(monitor);
+				monitor.checkWindowDifference();
 				callback();
 			};
 			itFunc.apply(this,arguments);
@@ -48,16 +48,6 @@ getJasmineRequireObj().scopeTester = function() {
 			return monitor;
 		}
 
-	}
-
-	function checkWindowDifference(monitor) {
-		var diff = monitor.difference();
-		
-		if(diff.count > 0) {//Found vars on the scope
-			var foundVars = foundVarsToStr(diff.valueMap);
-			console.error('The scope was contaminated by : ' + foundVars);
-			expect("scope").toBe("NOT contaminated");
-		}		
 	}
 
 	function foundVarsToStr(valueMap) {
@@ -202,6 +192,16 @@ getJasmineRequireObj().scopeTester = function() {
 			var valueMap = mapValues(diffWithIgnore);
 			return {count : diffWithIgnore.data.length, valueMap: valueMap};
 		};
+
+		_this.checkWindowDifference = function() {
+			var diff = _this.difference();
+			
+			if(diff.count > 0) {//Found vars on the scope
+				var foundVars = foundVarsToStr(diff.valueMap);
+				console.error('The scope was contaminated by : ' + foundVars);
+				expect("scope").toBe("NOT contaminated");
+			}		
+		}
 		
 		function mapValues(nameSet)
 		{
@@ -228,4 +228,4 @@ getJasmineRequireObj().scopeTester = function() {
 		
 		ctor.apply(null, arguments);
 	}
-};
+})();

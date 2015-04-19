@@ -1,5 +1,5 @@
 getJasmineRequireObj().interface = function(jasmine, env) {
-  scopeTester = getJasmineRequireObj().scopeTester();
+  scopeTester = getJasmineRequireObj().scopeTester;
   passParameters = getJasmineRequireObj().passParameters();
 
   var jasmineInterface = {
