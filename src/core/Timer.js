@@ -1,6 +1,11 @@
 getJasmineRequireObj().Timer = function() {
+
   var defaultNow = (function(Date) {
-    return function() { return new Date().getTime(); };
+    if (window.performance && window.performance.now) {
+      return function() { return window.performance.now(); };
+    } else {
+      return function() { return new Date().getTime(); };
+    }
   })(Date);
 
   function Timer(options) {
@@ -16,6 +21,8 @@ getJasmineRequireObj().Timer = function() {
     this.elapsed = function() {
       return now() - startTime;
     };
+
+    this.now = now;
   }
 
   return Timer;
