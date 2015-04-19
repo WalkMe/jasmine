@@ -1,5 +1,6 @@
 getJasmineRequireObj().interface = function(jasmine, env) {
   scopeTester = getJasmineRequireObj().scopeTester();
+  passParameters = getJasmineRequireObj().passParameters();
 
   var jasmineInterface = {
     describe: function(description, specDefinitions) {
@@ -16,7 +17,7 @@ getJasmineRequireObj().interface = function(jasmine, env) {
 
     it: function(description, fn, timeout, properties) {
       fn = scopeTester(fn, properties);
-      return env.it(description, fn, timeout);
+      return passParameters(env.it(description, fn, timeout), properties);
     },
 
     xit: function() {
@@ -25,7 +26,7 @@ getJasmineRequireObj().interface = function(jasmine, env) {
 
     fit: function(description, fn, timeout, properties) {
       fn = scopeTester(fn, properties);
-      return env.fit(description, fn, timeout);
+      return passParameters(env.fit(description, fn, timeout), properties);
     },
 
     beforeEach: function() {
