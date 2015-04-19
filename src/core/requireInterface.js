@@ -1,5 +1,5 @@
-getJasmineRequireObj().interface = function(jasmine, env, scopeTester) {
-  scopeTester = scopeTester || function (func){return func;};
+getJasmineRequireObj().interface = function(jasmine, env) {
+  scopeTester = getJasmineRequireObj().scopeTester;
 
   var jasmineInterface = {
     describe: function(description, specDefinitions) {
